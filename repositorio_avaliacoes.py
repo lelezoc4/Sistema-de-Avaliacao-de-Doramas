@@ -3,10 +3,15 @@
 from conexao import conectar
 
 SQL_LISTAR = """
-   SELECT a.id, a.data, a.nota, a.descricao, a.dorama_id, a.usuario_id
-   FROM Avaliacao a
-   JOIN Dorama d ON d.id = a.dorama_id
-   JOIN Usuario u ON u.id = a.usuario_id
+    SELECT
+        id,
+        data,
+        descricao,
+        nota,
+        usuario_id,
+        dorama_id
+    FROM Avaliacao
+    ORDER BY id
 """
 
 def listar():

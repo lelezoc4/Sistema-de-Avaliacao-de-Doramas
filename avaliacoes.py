@@ -13,6 +13,9 @@ import mysql.connector
 import repositorio_doramas
 import repositorio_avaliacoes as repo
 import repositorio_usuario
+import relatorio
+
+ARQUIVO_PDF = "relatorio_lancamentos.pdf"
 
 def texto_para_data(texto):
     """Converte 'dd/mm/aaaa' em date. Lança ValueError se o texto for inválido."""
@@ -81,37 +84,26 @@ class Aplicacao:
         self.lbl_mensagem.set_text(texto)
      
     def carregar_tabela(self):
-        """Carrega as avaliações do banco de dados na tabela."""
         self.lst_avaliacoes.clear()
         try:
-            avaliacoes = repo.listar()
-            for id_avaliacao, data, nota, descricao, dorama_id, usuario_id in avaliacoes:
-                valores = [
+            resultados = repo.listar()
+            for linha in resultados:
+                id_avaliacao = linha[0]
+                data = linha[1]
+                descricao = linha[2]
+                nota = linha[3]
+                usuario_id = linha[4]
+                dorama_id = linha[5]
+                self.lst_avaliacoes.append([
                     int(id_avaliacao),
                     data_para_texto(data),
-                    float(nota),
                     str(descricao),
-                    int(dorama_id),
-                    int(usuario_id)
-                ]
-                # Diagnóstico temporário: mostra os tipos das colunas
-                print("\n--- TIPOS DAS COLUNAS ---", flush=True)
-                for i in range(self.lst_avaliacoes.get_n_columns()):
-                    tipo = self.lst_avaliacoes.get_column_type(i)
-                    print(f"Coluna {i}: {tipo.name}", flush=True)
-                # Mostra os valores e seus tipos
-                print("\n--- VALORES ENVIADOS ---", flush=True)
-                for i, valor in enumerate(valores):
-                    print(
-                        f"Valor {i}: {valor!r} "
-                        f"({type(valor).__name__})",
-                        flush=True
-                    )
-                self.lst_avaliacoes.append(valores)
-        except mysql.connector.Error as erro:
-            self.mostrar_mensagem(
-                f"Erro ao acessar o banco: {erro.msg}"
-            )
+                    float(nota),
+                    int(usuario_id),
+                    int(dorama_id)
+                ])
+        except Exception as erro:
+            print(f"Erro ao carregar avaliações: {erro}")
 
     def carregar_listas(self):
         """Preenche as listas de categorias e de membros com os dados do banco."""
@@ -246,8 +238,26 @@ class Aplicacao:
         dialogo.destroy()
 
     def ao_gerar_pdf(self, componente=None, dados=None):
-        self.mostrar_mensagem("Em breve: o relatório em PDF será construído na próxima aula.")
+        if len(self.lst_avaliacoes) == 0:
+            self.mostrar_mensagem("Não há avaliações para gerar o relatório.")
+            return
 
+        linhas = []
+        for linha in self.lst_avaliacoes:
+            linhas.append((linha[1], linha[2], linha[3], linha[4], linha[5]))
+
+        if self.periodo is None:
+            subtitulo = "Período: todos os lançamentos"
+        else:
+            subtitulo = (f"Período: {data_para_texto(self.periodo[0])} a {data_para_texto(self.periodo[1])}")
+
+        try:
+            relatorio.gerar_pdf(ARQUIVO_PDF, subtitulo, linhas)
+        except OSError as erro:
+            self.mostrar_mensagem(f"Não foi possível salvar o PDF: {erro.strerror}")
+            return
+        self.mostrar_mensagem(f"Relatório com {len(linhas)} avaliação(ões) gerado em {ARQUIVO_PDF}.")
+        
     def ao_editar(self, componente=None, dados=None):
             linha = self.linha_selecionada()
             if linha is None:

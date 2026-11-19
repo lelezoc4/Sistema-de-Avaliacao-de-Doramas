@@ -8,10 +8,10 @@
       <column type="gint64"/>
       <!-- column-name gchararray -->
       <column type="gchararray"/>
-      <!-- column-name gfloat -->
-      <column type="gfloat"/>
-      <!-- column-name gchararray1 -->
+      <!-- column-name gchararray -->
       <column type="gchararray"/>
+      <!-- column-name gchararray1 -->
+      <column type="gfloat"/>
       <!-- column-name gchararray2 -->
       <column type="gint64"/>
       <!-- column-name gint64 -->
