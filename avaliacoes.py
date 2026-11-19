@@ -32,10 +32,12 @@ class Aplicacao:
         builder.add_from_file("avaliacoes.glade")
      
         self.janela = builder.get_object("janela")
-        self.mni_lancamentos = builder.get_object("mni_lancamentos")
-        self.mni_lancamentos.connect("activate", self.ao_menu_lancamentos)
+        self.mni_avaliacao = builder.get_object("mni_avaliacao")
+        self.mni_avaliacao.connect("activate", self.ao_menu_avaliacao)
         self.mni_usuarios = builder.get_object("mni_usuarios")
         self.mni_usuarios.connect("activate", self.ao_menu_usuarios)
+        self.mni_dorama = builder.get_object("mni_dorama")
+        self.mni_dorama.connect("activate", self.ao_menu_doramas)
         self.mni_sair = builder.get_object("mni_sair")
         self.mni_sair.connect("activate", self.ao_menu_sair)
         self.mni_sobre = builder.get_object("mni_sobre")
@@ -211,7 +213,7 @@ class Aplicacao:
         self.limpar_formulario()
         self.carregar_tabela()
 
-    def ao_menu_lancamentos(self, componente=None, dados=None):
+    def ao_menu_avaliacao(self, componente=None, dados=None):
         self.carregar_listas()
         self.limpar_formulario()
         self.ao_mostrar_todos()
@@ -219,6 +221,10 @@ class Aplicacao:
     def ao_menu_usuarios(self, componente=None, dados=None):
         """Abre o cadastro de usuários em uma janela separada."""
         subprocess.Popen([sys.executable, "usuarios.py"])
+
+    def ao_menu_doramas(self, componente=None, dados=None):
+        """Abre o cadastro de doramas em uma janela separada."""
+        subprocess.Popen([sys.executable, "doramas.py"])
 
     def ao_menu_sair(self, componente=None, dados=None):
        self.janela.destroy()

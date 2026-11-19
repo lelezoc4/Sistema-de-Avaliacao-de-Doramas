@@ -59,7 +59,7 @@
             </child>
             <child>
               <object class="GtkEntry" id="ent_nome">
-                <property name="can-focus">False</property>
+                <property name="can-focus">True</property>
                 <property name="hexpand">True</property>
                 <property name="max-length">60</property>
               </object>
@@ -81,7 +81,7 @@
             </child>
             <child>
               <object class="GtkEntry" id="ent_login">
-                <property name="can-focus">False</property>
+                <property name="can-focus">True</property>
                 <property name="hexpand">True</property>
                 <property name="max-length">30</property>
               </object>
@@ -103,7 +103,7 @@
             </child>
             <child>
               <object class="GtkEntry" id="ent_senha">
-                <property name="can-focus">False</property>
+                <property name="can-focus">True</property>
                 <property name="hexpand">True</property>
                 <property name="max-length">30</property>
                 <property name="visibility">False</property>

@@ -8,13 +8,13 @@
       <column type="gint64"/>
       <!-- column-name gchararray -->
       <column type="gchararray"/>
-      <!-- column-name gchararray -->
-      <column type="gchararray"/>
       <!-- column-name gchararray1 -->
-      <column type="gfloat"/>
+      <column type="gchararray"/>
       <!-- column-name gchararray2 -->
+      <column type="gfloat"/>
+      <!-- column-name gchararray3 -->
       <column type="gint64"/>
-      <!-- column-name gint64 -->
+      <!-- column-name gint1 -->
       <column type="gint64"/>
     </columns>
   </object>
@@ -40,9 +40,17 @@
                   <object class="GtkMenu" id="mnu_cadastros">
                     <property name="can-focus">False</property>
                     <child>
-                      <object class="GtkMenuItem" id="mni_lancamentos">
+                      <object class="GtkMenuItem" id="mni_avaliacao">
                         <property name="can-focus">False</property>
                         <property name="label">_Lançamentos</property>
+                        <property name="use-underline">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="mni_dorama">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">_Doramas</property>
                         <property name="use-underline">True</property>
                       </object>
                     </child>
@@ -135,7 +143,7 @@
                 </child>
                 <child>
                   <object class="GtkEntry" id="ent_data_inicial">
-                    <property name="can-focus">False</property>
+                    <property name="can-focus">True</property>
                     <property name="max-length">10</property>
                     <property name="width-chars">11</property>
                     <property name="placeholder-text">dd/mm/aaaa</property>
@@ -157,6 +165,7 @@
                     <property name="label">Buscar</property>
                     <property name="can-focus">False</property>
                     <property name="receives-default">False</property>
+                    <signal name="clicked" handler="ao_buscar" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -169,6 +178,7 @@
                     <property name="label">Mostrar todos</property>
                     <property name="can-focus">False</property>
                     <property name="receives-default">False</property>
+                    <signal name="clicked" handler="ao_mostrar_todos" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -179,9 +189,10 @@
                 <child>
                   <object class="GtkButton" id="btn_gerar_pdf">
                     <property name="label">Gerar PDF</property>
-                    <property name="can-focus">False</property>
+                    <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
                     <property name="tooltip-text">Gera um relatório em PDF dos lançamentos da tabela (próxima aula)</property>
+                    <signal name="clicked" handler="ao_gerar_pdf" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -204,7 +215,7 @@
                 <property name="shadow-type">in</property>
                 <child>
                   <object class="GtkTreeView" id="tvw_avaliacoes">
-                    <property name="can-focus">False</property>
+                    <property name="can-focus">True</property>
                     <property name="model">lst_avaliacoes</property>
                     <child internal-child="selection">
                       <object class="GtkTreeSelection"/>
@@ -232,6 +243,18 @@
                       </object>
                     </child>
                     <child>
+                      <object class="GtkTreeViewColumn" id="col_descricao">
+                        <property name="title">Descrição</property>
+                        <property name="expand">True</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="rnd_descricao"/>
+                          <attributes>
+                            <attribute name="text">2</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkTreeViewColumn" id="col_nota">
                         <property name="title">Nota</property>
                         <child>
@@ -245,13 +268,12 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkTreeViewColumn" id="col_descricao">
-                        <property name="title">Descrição</property>
-                        <property name="expand">True</property>
+                      <object class="GtkTreeViewColumn" id="col_usuario">
+                        <property name="title">Usuário</property>
                         <child>
-                          <object class="GtkCellRendererText" id="rnd_descricao"/>
+                          <object class="GtkCellRendererText" id="rnd_usuario"/>
                           <attributes>
-                            <attribute name="text">2</attribute>
+                            <attribute name="text">4</attribute>
                           </attributes>
                         </child>
                       </object>
@@ -263,17 +285,6 @@
                           <object class="GtkCellRendererText" id="rnd_dorama"/>
                           <attributes>
                             <attribute name="text">3</attribute>
-                          </attributes>
-                        </child>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkTreeViewColumn" id="col_usuario">
-                        <property name="title">Usuário</property>
-                        <child>
-                          <object class="GtkCellRendererText" id="rnd_usuario"/>
-                          <attributes>
-                            <attribute name="text">4</attribute>
                           </attributes>
                         </child>
                       </object>
@@ -306,7 +317,7 @@
                 </child>
                 <child>
                   <object class="GtkEntry" id="ent_data">
-                    <property name="can-focus">False</property>
+                    <property name="can-focus">True</property>
                     <property name="hexpand">True</property>
                     <property name="max-length">10</property>
                     <property name="placeholder-text">dd/mm/aaaa</property>
@@ -329,7 +340,7 @@
                 </child>
                 <child>
                   <object class="GtkEntry" id="ent_nota">
-                    <property name="can-focus">False</property>
+                    <property name="can-focus">True</property>
                     <property name="hexpand">True</property>
                     <property name="max-length">12</property>
                     <property name="placeholder-text">Ex.: 5,0</property>
@@ -352,7 +363,7 @@
                 </child>
                 <child>
                   <object class="GtkEntry" id="ent_descricao">
-                    <property name="can-focus">False</property>
+                    <property name="can-focus">True</property>
                     <property name="hexpand">True</property>
                     <property name="max-length">100</property>
                     <property name="placeholder-text">Ex.: Muito Bom</property>
@@ -422,6 +433,7 @@
                     <property name="label">Gravar</property>
                     <property name="can-focus">False</property>
                     <property name="receives-default">False</property>
+                    <signal name="clicked" handler="ao_gravar" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -435,6 +447,7 @@
                     <property name="sensitive">False</property>
                     <property name="can-focus">False</property>
                     <property name="receives-default">False</property>
+                    <signal name="clicked" handler="ao_editar" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -448,6 +461,7 @@
                     <property name="sensitive">False</property>
                     <property name="can-focus">False</property>
                     <property name="receives-default">False</property>
+                    <signal name="clicked" handler="ao_excluir" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
